@@ -1,0 +1,15 @@
+{
+  "name": "PoseFix",
+  "short_name": "PoseFix",
+  "description": "AI-powered yoga and physiotherapy pose analysis",
+  "start_url": "/sessions",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
