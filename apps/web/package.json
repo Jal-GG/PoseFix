@@ -1,0 +1,45 @@
+{
+  "name": "@posefix/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "dev:next": "next dev --turbopack",
+    "build": "next build",
+    "start": "node dist/server.js",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@auth/core": "^0.37.0",
+    "@mediapipe/tasks-vision": "^0.10.18",
+    "@posefix/db": "*",
+    "@posefix/scoring": "*",
+    "@posefix/shared": "*",
+    "@socket.io/redis-adapter": "^8.3.0",
+    "bcryptjs": "^2.4.3",
+    "ioredis": "^5.4.0",
+    "lucide-react": "^0.468.0",
+    "next": "^15.2.0",
+    "next-auth": "^5.0.0-beta.25",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sharp": "^0.33.0",
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "postcss": "^8.5.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "posefix",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "npm@11.6.2",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "db:generate": "turbo --filter @posefix/db generate",
+    "db:push": "turbo --filter @posefix/db push",
+    "db:migrate": "turbo --filter @posefix/db migrate",
+    "db:studio": "turbo --filter @posefix/db studio"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.0",
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.0"
+  }
+}
