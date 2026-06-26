@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from '@/components/ui';
 
 interface LiveClient {
   id: string;
@@ -46,14 +47,15 @@ export default function LiveMonitorPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Live Monitor</h1>
-          <p className="text-sm text-gray-400">
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <div className="space-y-1">
+          <Badge className="bg-primary/10 text-primary hover:bg-primary/10">Live Monitor</Badge>
+          <h1 className="text-3xl font-bold tracking-tight">Live Monitor</h1>
+          <p className="text-sm text-muted-foreground">
             {clients.length} client{clients.length !== 1 && 's'} active
           </p>
         </div>
-        <span className="flex items-center gap-2 text-sm text-green-400">
+        <span className="flex items-center gap-2 text-sm text-green-500">
           <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
           Live
         </span>
@@ -61,101 +63,111 @@ export default function LiveMonitorPage() {
 
       {expandedClient && expanded ? (
         <div>
-          <button
+          <Button
             onClick={() => setExpandedClient(null)}
-            className="mb-4 text-sm text-primary-400 hover:text-primary-300"
+            variant="ghost"
+            className="mb-4 px-0 text-sm text-primary hover:bg-transparent hover:text-primary"
           >
             &larr; Back to grid
-          </button>
+          </Button>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <div className="aspect-video rounded-xl border border-gray-800 bg-gray-900">
-              <div className="flex h-full items-center justify-center">
-                <p className="text-gray-500">Reconstructed skeleton for {expanded.name}</p>
-              </div>
-            </div>
+            <Card className="aspect-video border-border/70 bg-card/80 backdrop-blur">
+              <CardContent className="flex h-full items-center justify-center p-0">
+                <p className="text-muted-foreground">Reconstructed skeleton for {expanded.name}</p>
+              </CardContent>
+            </Card>
 
             <div className="space-y-4">
-              <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-                <h3 className="mb-3 font-semibold">Joint Angles</h3>
+              <Card className="border-border/70 bg-card/80 backdrop-blur">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Joint Angles</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
                 <div className="space-y-2">
                   {Object.entries(expanded.jointAngles).map(([joint, angle]) => (
                     <div key={joint} className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">{joint.replace(/_/g, ' ')}</span>
-                      <span className="font-mono text-white">{angle.toFixed(1)}°</span>
+                      <span className="text-muted-foreground">{joint.replace(/_/g, ' ')}</span>
+                      <span className="font-mono text-foreground">{angle.toFixed(1)}°</span>
                     </div>
                   ))}
                 </div>
-              </div>
+                </CardContent>
+              </Card>
 
-              <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-                <h3 className="mb-3 font-semibold">Alerts</h3>
+              <Card className="border-border/70 bg-card/80 backdrop-blur">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Alerts</CardTitle>
+                </CardHeader>
+                <CardContent>
                 {expanded.mistakes.length > 0 ? (
                   <ul className="space-y-2">
                     {expanded.mistakes.map((m, i) => (
-                      <li key={i} className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400">
+                      <li key={i} className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
                         {m.replace(/_/g, ' ')}
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-gray-500">No active alerts</p>
+                  <p className="text-sm text-muted-foreground">No active alerts</p>
                 )}
-              </div>
+                </CardContent>
+              </Card>
 
-              <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-                <h3 className="mb-3 font-semibold">Send Message</h3>
-                <div className="flex gap-2">
-                  <input
+              <Card className="border-border/70 bg-card/80 backdrop-blur">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Send Message</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-2">
+                  <Input
                     type="text"
                     placeholder="Type a message..."
-                    className="flex-1 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-primary-500"
                   />
-                  <button className="rounded-lg bg-primary-600 px-4 py-2 text-sm transition-colors hover:bg-primary-700">
+                  <Button>
                     Send
-                  </button>
-                </div>
-              </div>
+                  </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {clients.map((client) => (
-            <button
+            <Button
               key={client.id}
               onClick={() => setExpandedClient(client.id)}
-              className="group rounded-xl border border-gray-800 bg-gray-900 p-4 text-left transition-all hover:border-primary-500/50"
+              variant="outline"
+              className="group h-auto justify-start p-0 text-left"
             >
-              <div className="mb-3 aspect-video rounded-lg bg-gray-800">
-                <div className="flex h-full items-center justify-center">
-                  <span className="text-xs text-gray-600">Skeleton</span>
-                </div>
-              </div>
-
-              <div className="mb-2 flex items-center justify-between">
-                <h3 className="font-medium">{client.name}</h3>
-                <span
-                  className={`text-lg font-bold ${
-                    client.score >= 85 ? 'text-green-400' : client.score >= 70 ? 'text-yellow-400' : 'text-red-400'
-                  }`}
-                >
-                  {client.score}
-                </span>
-              </div>
-
-              <div className="text-sm text-gray-400">{client.currentPose}</div>
-
-              {client.mistakes.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {client.mistakes.map((m, i) => (
-                    <span key={i} className="rounded bg-red-500/10 px-2 py-0.5 text-xs text-red-400">
-                      {m.replace(/_/g, ' ')}
+              <Card className="w-full border-0 bg-transparent shadow-none">
+                <CardContent className="space-y-3 p-4 text-left">
+                  <div className="aspect-video rounded-lg bg-muted/50">
+                    <div className="flex h-full items-center justify-center">
+                      <span className="text-xs text-muted-foreground">Skeleton</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-medium">{client.name}</h3>
+                    <span className={`text-lg font-bold ${client.score >= 85 ? 'text-green-500' : client.score >= 70 ? 'text-yellow-500' : 'text-red-500'}`}>
+                      {client.score}
                     </span>
-                  ))}
-                </div>
-              )}
-            </button>
+                  </div>
+                  <div className="text-sm text-muted-foreground">{client.currentPose}</div>
+                  {client.mistakes.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {client.mistakes.map((m, i) => (
+                        <Badge key={i} variant="destructive" className="rounded-md bg-destructive/10 text-destructive">
+                          {m.replace(/_/g, ' ')}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </Button>
           ))}
         </div>
       )}

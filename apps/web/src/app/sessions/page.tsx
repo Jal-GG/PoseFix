@@ -1,6 +1,7 @@
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { SessionCard } from '@/components/sessions/SessionCard';
+import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui';
 
 const MOCK_TEMPLATES = [
   { id: 'quick_start', name: 'Free Practice', description: 'Start an open-ended session with real-time pose analysis. No structured plan — just practice.', type: 'yoga' as const, difficulty: 'beginner' as const, durationMinutes: 15, poseCount: 0 },
@@ -25,32 +26,52 @@ export default async function SessionsPage() {
   if (!session?.user) redirect('/login');
 
   return (
-    <div className="mx-auto max-w-5xl p-4 pb-24 sm:p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">Hi, {session.user.name}</h1>
-        <p className="text-gray-400">Ready for your session?</p>
+    <div className="mx-auto max-w-7xl space-y-8 pb-24">
+      <div className="space-y-2">
+        <Badge className="bg-primary/10 text-primary hover:bg-primary/10">Sessions</Badge>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Welcome back, {session.user.name}</h1>
+        <p className="max-w-2xl text-muted-foreground">Choose a session template to get started.</p>
       </div>
 
-      <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
+      <div className="flex gap-2 overflow-x-auto pb-2">
         {CATEGORIES.map((cat) => (
-          <button
+          <Button
             key={cat.key}
-            className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            variant={cat.key === 'all' ? 'default' : 'outline'}
+            size="sm"
+            className={`shrink-0 ${
               cat.key === 'all'
-                ? 'bg-primary-600 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                ? ''
+                : 'bg-background'
             }`}
           >
             {cat.label}
-          </button>
+          </Button>
         ))}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {MOCK_TEMPLATES.map((t) => (
           <SessionCard key={t.id} session={t} />
         ))}
       </div>
+
+      <Card className="border-border/70 bg-card/80 backdrop-blur">
+        <CardHeader className="flex flex-row items-center gap-4 space-y-0">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+            <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <CardTitle className="text-lg">Need help choosing?</CardTitle>
+            <CardDescription>Start with &quot;Free Practice&quot; for an open session.</CardDescription>
+          </div>
+          <Button asChild>
+            <Link href="/session/setup?template=quick_start&type=yoga">Start now</Link>
+          </Button>
+        </CardHeader>
+      </Card>
     </div>
   );
 }

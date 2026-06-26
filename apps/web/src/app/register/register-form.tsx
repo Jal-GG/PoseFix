@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { Button, Input, Label } from '@/components/ui';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -54,68 +55,78 @@ export default function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="rounded-lg bg-red-500/10 p-3 text-sm text-red-400">
+        <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
           {error}
         </div>
       )}
-      <div>
-        <label htmlFor="name" className="mb-1 block text-sm text-gray-400">
-          Name
-        </label>
-        <input
+      
+      <div className="space-y-2">
+        <Label htmlFor="name">Full Name</Label>
+        <Input
           id="name"
           name="name"
           type="text"
           required
-          className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white outline-none focus:border-primary-500"
+          placeholder="John Doe"
         />
       </div>
-      <div>
-        <label htmlFor="email" className="mb-1 block text-sm text-gray-400">
-          Email
-        </label>
-        <input
+      
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
           id="email"
           name="email"
           type="email"
           required
-          className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white outline-none focus:border-primary-500"
+          placeholder="john@example.com"
         />
       </div>
-      <div>
-        <label htmlFor="password" className="mb-1 block text-sm text-gray-400">
-          Password
-        </label>
-        <input
+      
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
           id="password"
           name="password"
           type="password"
           required
           minLength={8}
-          className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white outline-none focus:border-primary-500"
+          placeholder="Minimum 8 characters"
         />
       </div>
-      <div>
-        <label htmlFor="role" className="mb-1 block text-sm text-gray-400">
-          I am a
-        </label>
+      
+      <div className="space-y-2">
+        <Label htmlFor="role">I am a</Label>
         <select
           id="role"
           name="role"
           required
-          className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white outline-none focus:border-primary-500"
+          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <option value="client">Client</option>
-          <option value="trainer">Trainer</option>
+          <option value="client">Client (Trainee)</option>
+          <option value="trainer">Trainer (Coach)</option>
         </select>
       </div>
-      <button
+      
+      <Button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-primary-600 py-2 font-medium transition-colors hover:bg-primary-700 disabled:opacity-50"
+        className="w-full"
       >
-        {loading ? 'Creating account...' : 'Create Account'}
-      </button>
+        {loading ? (
+          <div className="flex items-center gap-2">
+            <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+            Creating account...
+          </div>
+        ) : (
+          'Create Account'
+        )}
+      </Button>
     </form>
   );
 }

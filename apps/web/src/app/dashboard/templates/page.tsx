@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { CategoryBadge, DifficultyDots } from '@/components/ui/index';
+import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Separator } from '@/components/ui';
 
 interface PoseItem {
   id: string;
@@ -58,47 +59,47 @@ export default function TemplateBuilderPage() {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <div>
-        <div className="mb-4">
-          <h1 className="text-2xl font-bold">Session Template Builder</h1>
-          <p className="text-sm text-gray-400">Drag poses to build your session</p>
+        <div className="mb-4 space-y-2">
+          <Badge className="bg-primary/10 text-primary hover:bg-primary/10">Templates</Badge>
+          <h1 className="text-3xl font-bold tracking-tight">Session Template Builder</h1>
+          <p className="text-sm text-muted-foreground">Drag poses to build your session.</p>
         </div>
 
         <div className="mb-4">
-          <input
+          <Input
             type="text"
             placeholder="Template name..."
             value={templateName}
             onChange={(e) => setTemplateName(e.target.value)}
-            className="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white outline-none focus:border-primary-500"
           />
         </div>
 
         <div className="mb-4">
-          <input
+          <Input
             type="text"
             placeholder="Search poses..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white outline-none focus:border-primary-500"
           />
         </div>
 
         <div className="space-y-2">
           {filteredPoses.map((pose) => (
-            <button
+            <Button
               key={pose.id}
               onClick={() => addToSequence(pose)}
-              className="flex w-full items-center justify-between rounded-lg border border-gray-800 bg-gray-900 px-4 py-3 text-left transition-colors hover:border-primary-500/50"
+              variant="outline"
+              className="h-auto w-full items-start justify-between px-4 py-4 text-left"
             >
               <div>
                 <div className="text-sm font-medium">{pose.name}</div>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="mt-2 flex items-center gap-2">
                   <CategoryBadge category={pose.category} />
                   <DifficultyDots level={pose.difficulty} />
                 </div>
               </div>
               <span className="text-primary-400">+</span>
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -107,21 +108,23 @@ export default function TemplateBuilderPage() {
         <div className="sticky top-20">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold">Sequence ({sequence.length} poses)</h2>
-            <span className="text-sm text-gray-400">{Math.round(totalDuration / 60)} min total</span>
+            <span className="text-sm text-muted-foreground">{Math.round(totalDuration / 60)} min total</span>
           </div>
 
           {sequence.length === 0 ? (
-            <div className="rounded-xl border-2 border-dashed border-gray-800 p-8 text-center">
-              <p className="text-sm text-gray-500">Add poses from the library to build your session</p>
-            </div>
+            <Card className="border-dashed border-border bg-background/60">
+              <CardContent className="p-8 text-center text-sm text-muted-foreground">
+                Add poses from the library to build your session.
+              </CardContent>
+            </Card>
           ) : (
             <div className="space-y-2">
               {sequence.map((item, index) => (
                 <div
                   key={`${item.id}-${index}`}
-                  className="flex items-center gap-3 rounded-lg border border-gray-800 bg-gray-900 px-4 py-3"
+                  className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 shadow-sm"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-800 text-xs text-gray-400">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs text-muted-foreground">
                     {index + 1}
                   </span>
                   <div className="flex-1">
@@ -129,21 +132,23 @@ export default function TemplateBuilderPage() {
                     <CategoryBadge category={item.category as 'yoga' | 'physiotherapy' | 'stretching'} key={item.id} />
                   </div>
                   <div className="flex items-center gap-2">
-                    <input
+                    <Input
                       type="number"
                       value={item.duration}
                       onChange={(e) => updateDuration(index, parseInt(e.target.value) || 30)}
-                      className="w-16 rounded border border-gray-700 bg-gray-800 px-2 py-1 text-center text-xs text-white outline-none focus:border-primary-500"
+                      className="h-8 w-16 text-center"
                       min={5}
                       max={120}
                     />
-                    <span className="text-xs text-gray-500">s</span>
-                    <button
+                    <span className="text-xs text-muted-foreground">s</span>
+                    <Button
                       onClick={() => removeFromSequence(index)}
-                      className="text-red-400 hover:text-red-300"
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2 text-destructive hover:text-destructive"
                     >
                       ✕
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -151,9 +156,9 @@ export default function TemplateBuilderPage() {
           )}
 
           {sequence.length > 0 && (
-            <button className="mt-4 w-full rounded-lg bg-primary-600 py-3 font-medium transition-colors hover:bg-primary-700">
+            <Button className="mt-4 w-full">
               Save Template
-            </button>
+            </Button>
           )}
         </div>
       </div>

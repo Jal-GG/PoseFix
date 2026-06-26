@@ -64,7 +64,7 @@ export default async function ClientProfilePage({ params }: { params: Promise<{ 
         <div className="rounded-xl border border-gray-800 bg-gray-900 p-5 lg:col-span-2">
           <h2 className="mb-4 font-semibold">Score Trend — Warrior II</h2>
           <div className="relative h-40">
-            <svg className="h-full w-full" viewBox="0 0 320 160" preserveAspectRatio="none">
+            <svg className="block h-full w-full" width="320" height="160" viewBox="0 0 320 160" preserveAspectRatio="none">
               <polyline
                 points={TREND_DATA.map((d, i) => `${(i / (TREND_DATA.length - 1)) * 300},${160 - (d.score - 50) * 3.5}`).join(' ')}
                 fill="none"

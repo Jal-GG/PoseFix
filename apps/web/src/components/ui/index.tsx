@@ -1,5 +1,13 @@
 import { cn } from '@/lib/utils';
 
+export { Button } from './button';
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './card';
+export { Badge } from './badge';
+export { Input } from './input';
+export { Label } from './label';
+export { Separator } from './separator';
+export { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './table';
+
 export function ScoreBadge({
   score,
   size = 'md',
